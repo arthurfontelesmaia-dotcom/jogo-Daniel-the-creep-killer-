@@ -1,0 +1,82 @@
+[gd_scene load_steps=3 format=3]
+
+[sub_resource type="GDScript" id="GDScript_camera"]
+script/source = "extends Camera2D
+## Movimento automático só para você VER o parallax funcionando.
+## Depois troca esse nó pela câmera do seu Player de verdade.
+
+@export var alcance: float = 300.0
+@export var velocidade: float = 0.4
+
+var tempo := 0.0
+
+func _process(delta):
+	tempo += delta
+	position.x = sin(tempo * velocidade) * alcance
+"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_chao"]
+size = Vector2(1920, 60)
+
+[node name="ChoralChambers" type="Node2D"]
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+
+[node name="FundoDistante" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.2, 0.2)
+
+[node name="CeuGradiente" type="Polygon2D" parent="ParallaxBackground/FundoDistante"]
+polygon = PackedVector2Array(-960, -540, 960, -540, 960, 540, -960, 540)
+vertex_colors = PackedColorArray(0.55, 0.35, 0.15, 1, 0.55, 0.35, 0.15, 1, 0.08, 0.05, 0.15, 1, 0.08, 0.05, 0.15, 1)
+
+[node name="ArcoEsquerdo" type="Polygon2D" parent="ParallaxBackground/FundoDistante"]
+polygon = PackedVector2Array(-400, -100, -360, -300, -280, -300, -240, -100, -240, 200, -400, 200)
+color = Color(0.15, 0.08, 0.2, 0.6)
+
+[node name="ArcoDireito" type="Polygon2D" parent="ParallaxBackground/FundoDistante"]
+polygon = PackedVector2Array(200, -100, 240, -300, 320, -300, 360, -100, 360, 200, 200, 200)
+color = Color(0.15, 0.08, 0.2, 0.6)
+
+[node name="Silhuetas" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.5, 0.5)
+
+[node name="ColunaEsquerda" type="Polygon2D" parent="ParallaxBackground/Silhuetas"]
+polygon = PackedVector2Array(-500, -540, -460, -540, -460, 200, -500, 200)
+color = Color(0.04, 0.03, 0.08, 1)
+
+[node name="ColunaCentro" type="Polygon2D" parent="ParallaxBackground/Silhuetas"]
+polygon = PackedVector2Array(-20, -540, 20, -540, 20, 200, -20, 200)
+color = Color(0.04, 0.03, 0.08, 0.85)
+
+[node name="ColunaDireita" type="Polygon2D" parent="ParallaxBackground/Silhuetas"]
+polygon = PackedVector2Array(460, -540, 500, -540, 500, 200, 460, 200)
+color = Color(0.04, 0.03, 0.08, 1)
+
+[node name="PrimeiroPlano" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.9, 0.9)
+
+[node name="PilarEsquerdo" type="Polygon2D" parent="ParallaxBackground/PrimeiroPlano"]
+polygon = PackedVector2Array(-700, -540, -600, -540, -600, 300, -700, 300)
+color = Color(0.01, 0.01, 0.02, 1)
+
+[node name="PilarDireito" type="Polygon2D" parent="ParallaxBackground/PrimeiroPlano"]
+polygon = PackedVector2Array(600, -540, 700, -540, 700, 300, 600, 300)
+color = Color(0.01, 0.01, 0.02, 1)
+
+[node name="Chao" type="StaticBody2D" parent="."]
+position = Vector2(0, 250)
+
+[node name="ChaoVisual" type="ColorRect" parent="Chao"]
+offset_left = -960.0
+offset_top = 0.0
+offset_right = 960.0
+offset_bottom = 60.0
+color = Color(0.06, 0.04, 0.05, 1)
+
+[node name="ChaoColisao" type="CollisionShape2D" parent="Chao"]
+shape = SubResource("RectangleShape2D_chao")
+position = Vector2(0, 30)
+
+[node name="CameraDemo" type="Camera2D" parent="."]
+current = true
+script = SubResource("GDScript_camera")
