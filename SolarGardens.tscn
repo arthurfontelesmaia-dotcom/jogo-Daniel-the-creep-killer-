@@ -1,0 +1,136 @@
+[gd_scene load_steps=3 format=3]
+
+[sub_resource type="GDScript" id="GDScript_camera"]
+script/source = "extends Camera2D
+
+## Movimento automático apenas para demonstrar o parallax.
+## Depois essa câmera pode ser substituída pela câmera do Player.
+
+@export var alcance: float = 350.0
+@export var velocidade: float = 0.35
+
+var tempo := 0.0
+
+func _process(delta):
+	tempo += delta
+	position.x = sin(tempo * velocidade) * alcance
+"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_chao"]
+size = Vector2(1920, 70)
+
+[node name="SolarGardens" type="Node2D"]
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="."]
+
+[node name="CeuDistante" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.12, 0.12)
+
+[node name="CeuGradiente" type="Polygon2D" parent="ParallaxBackground/CeuDistante"]
+polygon = PackedVector2Array(-960, -540, 960, -540, 960, 540, -960, 540)
+vertex_colors = PackedColorArray(0.45, 0.82, 0.95, 1, 0.45, 0.82, 0.95, 1, 0.98, 0.82, 0.62, 1, 0.98, 0.82, 0.62, 1)
+
+[node name="Sol" type="Polygon2D" parent="ParallaxBackground/CeuDistante"]
+polygon = PackedVector2Array(-520, -300, -500, -340, -460, -365, -415, -370, -370, -350, -340, -310, -335, -265, -355, -220, -395, -190, -445, -185, -490, -205, -520, -245)
+color = Color(1, 0.84, 0.38, 0.9)
+
+[node name="NuvemEsquerda" type="Polygon2D" parent="ParallaxBackground/CeuDistante"]
+polygon = PackedVector2Array(-900, -160, -830, -210, -760, -195, -700, -235, -620, -210, -560, -160, -560, -120, -900, -120)
+color = Color(0.95, 0.97, 0.9, 0.65)
+
+[node name="NuvemDireita" type="Polygon2D" parent="ParallaxBackground/CeuDistante"]
+polygon = PackedVector2Array(350, -250, 430, -300, 500, -280, 570, -320, 650, -290, 720, -240, 720, -200, 350, -200)
+color = Color(1, 0.98, 0.9, 0.55)
+
+[node name="Montanhas" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.25, 0.25)
+
+[node name="MontanhaEsquerda" type="Polygon2D" parent="ParallaxBackground/Montanhas"]
+polygon = PackedVector2Array(-960, 220, -800, 40, -650, 180, -500, -20, -300, 220)
+color = Color(0.32, 0.68, 0.68, 0.8)
+
+[node name="MontanhaCentro" type="Polygon2D" parent="ParallaxBackground/Montanhas"]
+polygon = PackedVector2Array(-350, 220, -100, 0, 100, 160, 300, -40, 520, 220)
+color = Color(0.27, 0.61, 0.63, 0.85)
+
+[node name="MontanhaDireita" type="Polygon2D" parent="ParallaxBackground/Montanhas"]
+polygon = PackedVector2Array(300, 220, 500, 70, 650, 170, 800, 20, 960, 180, 960, 250)
+color = Color(0.33, 0.7, 0.66, 0.75)
+
+[node name="PalacioDistante" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.45, 0.45)
+
+[node name="TorreEsquerda" type="Polygon2D" parent="ParallaxBackground/PalacioDistante"]
+polygon = PackedVector2Array(-650, -100, -610, -170, -570, -100, -570, 220, -650, 220)
+color = Color(0.91, 0.78, 0.56, 0.8)
+
+[node name="TorreCentro" type="Polygon2D" parent="ParallaxBackground/PalacioDistante"]
+polygon = PackedVector2Array(-70, -190, 0, -280, 70, -190, 70, 220, -70, 220)
+color = Color(0.95, 0.83, 0.62, 0.9)
+
+[node name="TorreDireita" type="Polygon2D" parent="ParallaxBackground/PalacioDistante"]
+polygon = PackedVector2Array(570, -100, 610, -170, 650, -100, 650, 220, 570, 220)
+color = Color(0.91, 0.78, 0.56, 0.8)
+
+[node name="Arquitetura" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.65, 0.65)
+
+[node name="ArcoEsquerdo" type="Polygon2D" parent="ParallaxBackground/Arquitetura"]
+polygon = PackedVector2Array(-760, -80, -720, -200, -630, -260, -540, -200, -500, -80, -500, 240, -560, 240, -560, -60, -590, -140, -630, -170, -670, -140, -700, -60, -700, 240, -760, 240)
+color = Color(0.96, 0.86, 0.65, 0.95)
+
+[node name="ArcoDireito" type="Polygon2D" parent="ParallaxBackground/Arquitetura"]
+polygon = PackedVector2Array(500, -80, 540, -200, 630, -260, 720, -200, 760, -80, 760, 240, 700, 240, 700, -60, 670, -140, 630, -170, 590, -140, 560, -60, 560, 240, 500, 240)
+color = Color(0.96, 0.86, 0.65, 0.95)
+
+[node name="PrimeiroPlano" type="ParallaxLayer" parent="ParallaxBackground"]
+motion_scale = Vector2(0.9, 0.9)
+
+[node name="PilarEsquerdo" type="Polygon2D" parent="ParallaxBackground/PrimeiroPlano"]
+polygon = PackedVector2Array(-850, -540, -700, -540, -700, 260, -850, 260)
+color = Color(0.22, 0.43, 0.42, 1)
+
+[node name="DetalhePilarEsquerdo" type="Polygon2D" parent="ParallaxBackground/PrimeiroPlano"]
+polygon = PackedVector2Array(-880, -80, -670, -80, -650, -20, -900, -20)
+color = Color(0.94, 0.67, 0.36, 1)
+
+[node name="PilarDireito" type="Polygon2D" parent="ParallaxBackground/PrimeiroPlano"]
+polygon = PackedVector2Array(700, -540, 850, -540, 850, 260, 700, 260)
+color = Color(0.22, 0.43, 0.42, 1)
+
+[node name="DetalhePilarDireito" type="Polygon2D" parent="ParallaxBackground/PrimeiroPlano"]
+polygon = PackedVector2Array(670, -80, 880, -80, 900, -20, 650, -20)
+color = Color(0.94, 0.67, 0.36, 1)
+
+[node name="VegetacaoEsquerda" type="Polygon2D" parent="ParallaxBackground/PrimeiroPlano"]
+polygon = PackedVector2Array(-960, 240, -930, 170, -900, 220, -870, 140, -830, 210, -790, 150, -750, 240)
+color = Color(0.18, 0.48, 0.37, 1)
+
+[node name="VegetacaoDireita" type="Polygon2D" parent="ParallaxBackground/PrimeiroPlano"]
+polygon = PackedVector2Array(750, 240, 790, 150, 830, 210, 870, 140, 900, 220, 930, 170, 960, 240)
+color = Color(0.18, 0.48, 0.37, 1)
+
+[node name="Chao" type="StaticBody2D" parent="."]
+position = Vector2(0, 250)
+
+[node name="ChaoVisual" type="ColorRect" parent="Chao"]
+offset_left = -960.0
+offset_top = 0.0
+offset_right = 960.0
+offset_bottom = 70.0
+color = Color(0.83, 0.68, 0.47, 1)
+
+[node name="FaixaChao" type="ColorRect" parent="Chao"]
+offset_left = -960.0
+offset_top = 0.0
+offset_right = 960.0
+offset_bottom = 12.0
+color = Color(1, 0.82, 0.45, 1)
+
+[node name="ChaoColisao" type="CollisionShape2D" parent="Chao"]
+shape = SubResource("RectangleShape2D_chao")
+position = Vector2(0, 35)
+
+[node name="CameraDemo" type="Camera2D" parent="."]
+current = true
+script = SubResource("GDScript_camera")
